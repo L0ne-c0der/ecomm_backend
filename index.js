@@ -1,11 +1,15 @@
 const express = require("express");
 const server = express();
 const mongoose = require("mongoose");
-const { CreateProduct } = require("./controller/Product");
 const productRouter = require("./routes/Products");
+const categoryRouter = require("./routes/Categories");
+const brandRouter = require("./routes/Brands");
 
 server.use(express.json()); //to parse req.body
+
 server.use("/products", productRouter.router); // Use the product router
+server.use("/categories", categoryRouter.router); // Use the category router
+server.use("/brands", brandRouter.router); // Use the brand router
 
 main();
 async function main() {
@@ -16,15 +20,11 @@ async function main() {
     console.log(error);
   }
 }
-server.listen(8085, () => {
-  console.log("Server is running on port 8085");
+server.listen(8080, () => {
+  console.log("Server is running on port 8080");
 });
 
-server.get("/", (req, res) => {
-  res.send("Hello, World!");
-});
-
-server.post("/products", CreateProduct);
+// server.post("/products", CreateProduct);
 
 server.get("/hello", (req, res) => {
   res.send("Hello, World!");
