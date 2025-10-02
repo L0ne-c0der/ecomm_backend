@@ -23,6 +23,7 @@ exports.fetchAllProducts = async (req, res) => {
 
   //products?category=beauty(only one, need to add more)&brand=apple&sort=-price(only one)&_page=1&_per_page=10
 
+  //TO DO: implement query on discounted price, currently working on actual price
   try {
     let filter = {};
     if (req.query.category) {
