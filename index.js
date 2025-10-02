@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const productRouter = require("./routes/Products");
 const categoryRouter = require("./routes/Categories");
 const brandRouter = require("./routes/Brands");
+const userRouter = require("./routes/Users");
 const cors = require("cors");
 
 server.use(express.json()); //to parse req.body
@@ -13,6 +14,7 @@ server.use(cors()); //to allow cross-origin requests
 server.use("/products", productRouter.router); // Use the product router
 server.use("/categories", categoryRouter.router); // Use the category router
 server.use("/brands", brandRouter.router); // Use the brand router
+server.use("/users", userRouter.router);
 
 main();
 async function main() {
