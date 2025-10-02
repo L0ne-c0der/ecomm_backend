@@ -1,8 +1,8 @@
 const express = require("express");
-const { fetchAllBrands } = require("../controller/Brand");
+const { fetchAllBrands, CreateBrand } = require("../controller/Brand");
 
 const router = express.Router();
 
-router.get("/", fetchAllBrands);
+router.get("/", fetchAllBrands).post("/", CreateBrand);
 
 exports.router = router;

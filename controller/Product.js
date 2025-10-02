@@ -65,3 +65,26 @@ exports.fetchAllProducts = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.fetchProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).exec();
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.updateProduct = async (req, res) => {
+  //works with PATCH and PUT
+  //it is not possible to update _id
+  //_id is immutable
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    }).exec();
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

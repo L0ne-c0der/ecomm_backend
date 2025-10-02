@@ -1,8 +1,11 @@
 const express = require("express");
-const { fetchAllCategories } = require("../controller/Category");
+const {
+  fetchAllCategories,
+  CreateCategory,
+} = require("../controller/Category");
 
 const router = express.Router();
 
-router.get("/", fetchAllCategories);
+router.get("/", fetchAllCategories).post("/", CreateCategory);
 
 exports.router = router;

@@ -8,3 +8,19 @@ exports.fetchAllBrands = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.CreateBrand = async (req, res) => {
+  try {
+    const brand = new Brand(req.body);
+    brand
+      .save()
+      .then((savedBrand) => {
+        res.status(201).json(savedBrand);
+      })
+      .catch((error) => {
+        res.status(400).json({ error: error.message });
+      });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
