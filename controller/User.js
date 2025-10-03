@@ -27,7 +27,10 @@ exports.fetchAllUsers = async (req, res) => {
 
 exports.fetchUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id, "name email id").exec();
+    const user = await User.findById(
+      req.params.id,
+      "name email id addresses"
+    ).exec();
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
