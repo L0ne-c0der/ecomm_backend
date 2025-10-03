@@ -18,4 +18,20 @@ const userSchema = new Schema(
   { versionKey: false }
 );
 
+const virtual = userSchema.virtual("id");
+
+virtual.get(function () {
+  return this._id;
+});
+
+userSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) {
+    // ret.id = ret._id;
+    delete ret._id;
+    // return ret;
+  },
+});
+
 exports.User = mongoose.model("User", userSchema);
