@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const Address = require("./address");
 
 const userSchema = new Schema(
   {
@@ -11,8 +12,7 @@ const userSchema = new Schema(
       enum: ["user", "admin", "moderator"],
       default: "user",
     },
-    // addresses: { type: [Schema.Types.Mixed], default: [] },
-    //TO DO: add address schema
+    addresses: [{ type: Schema.Types.ObjectId, ref: "Addresses", default: [] }],
     phone: { type: String, default: "", unique: true },
   },
   { versionKey: false }

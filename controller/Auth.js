@@ -23,7 +23,13 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne(
       { email: req.body.email },
       "id name email password addresses"
-    ).exec();
+    )
+      .populate({
+        path: "addresses",
+        // optionally limit returned fields, e.g.:
+        // select: "street city state zip -_id"
+      })
+      .exec();
     if (!user) {
       return res.status(401).json({ message: "invalid credentials" });
     }

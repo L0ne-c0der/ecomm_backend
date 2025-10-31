@@ -27,10 +27,13 @@ exports.fetchAllUsers = async (req, res) => {
 
 exports.fetchUserById = async (req, res) => {
   try {
-    const user = await User.findById(
-      req.params.id,
-      "name email id addresses"
-    ).exec();
+    const user = await User.findById(req.params.id, "name email id addresses")
+      .populate({
+        path: "addresses",
+        // optionally limit returned fields, e.g.:
+        // select: "street city state zip -_id"
+      })
+      .exec();
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
