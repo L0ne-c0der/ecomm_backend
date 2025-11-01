@@ -1,4 +1,4 @@
-const { Cart } = require("../model/Cart");
+const { Cart } = require("../model/cart");
 
 // exports.fetchAllCarts = async (req, res) => {
 //   try {

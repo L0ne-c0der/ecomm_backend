@@ -27,7 +27,10 @@ exports.fetchAllUsers = async (req, res) => {
 
 exports.fetchUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id, "name email id addresses")
+    const user = await User.findById(
+      req.params.id,
+      "name email id addresses role"
+    )
       .populate({
         path: "addresses",
         // optionally limit returned fields, e.g.:
