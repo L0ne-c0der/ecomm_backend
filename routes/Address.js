@@ -13,7 +13,7 @@ router
   .post("/", createAddress)
   .get("/", fetchAllAddresses)
   .get("/:id", fetchAddressById)
-  .put("/:id", updateAddress)
+  .patch("/:id", updateAddress)
   .delete("/:id", deleteAddress);
 
 exports.router = router;
