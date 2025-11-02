@@ -7,6 +7,7 @@ const {
 } = require("../controller/User");
 const addressRouter = require("./Address"); // ensure routes/Address.js exports router
 const cartRouter = require("./Carts"); // ensure routes/Carts.js exports router
+const orderRouter = require("./Orders"); // ensure routes/Orders.js exports router
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router
 
 router.use("/:userId/addresses", addressRouter.router); // Mount address routes
 router.use("/:userId/carts", cartRouter.router); // Mount cart routes
+router.use("/:userId/orders", orderRouter.router); // Mount order routes
 
 exports.router = router;
