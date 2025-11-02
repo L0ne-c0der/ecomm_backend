@@ -4,15 +4,15 @@ const {
   fetchUserCarts,
   updateCart,
   deleteCart,
-  clearCartById,
+  clearCartByUserId,
 } = require("../controller/Cart");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.post("/", createCart);
-router.get("/:userId", fetchUserCarts);
-router.patch("/:cartId", updateCart);
-router.delete("/:cartId", deleteCart);
-router.delete("/clear/:userId", clearCartById);
+router.get("/", fetchUserCarts);
+router.patch("/:id", updateCart);
+router.delete("/:id", deleteCart);
+router.delete("/clear", clearCartByUserId);
 
 exports.router = router;

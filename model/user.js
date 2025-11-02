@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const Address = require("./address");
 
+// TO DO: Remove redundant addresses field
 const userSchema = new Schema(
   {
     name: { type: String, required: true },

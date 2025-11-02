@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { User } = require("../model/user");
 const { Address } = require("../model/address");
 
+// TO DO: Remove redundant write operations to User collection
 exports.createAddress = async (req, res) => {
   // const session = await mongoose.startSession();
   try {

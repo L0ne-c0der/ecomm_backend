@@ -1,4 +1,4 @@
-const { Cart } = require("../model/cart");
+const { Order } = require("../model/order");
 
 // exports.fetchAllCarts = async (req, res) => {
 //   try {
@@ -9,14 +9,13 @@ const { Cart } = require("../model/cart");
 //   }
 // };
 
-exports.createCart = async (req, res) => {
+exports.createOrder = async (req, res) => {
   try {
-    const user = req.params.userId;
-    const cart = new Cart({ ...req.body, user });
-    const savedCart = await cart.save();
+    const order = new Order(req.body);
+    const savedOrder = await order.save();
 
-    const populatedCart = await Cart.findById(savedCart._id)
-      .populate("product quantity")
+    const populatedOrder = await Order.findById(savedOrder._id)
+      .populate("items.product")
       .exec();
 
     res.status(201).json(populatedCart);
@@ -29,8 +28,7 @@ exports.fetchUserCarts = async (req, res) => {
   try {
     const userId = req.params.userId;
     const carts = await Cart.find({ user: userId })
-      .select("-user")
-      .populate("product")
+      .populate("product quantity")
       .exec();
     res.status(200).json(carts);
   } catch (error) {
@@ -40,13 +38,10 @@ exports.fetchUserCarts = async (req, res) => {
 
 exports.updateCart = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const cartId = req.params.id;
+    const cartId = req.params.cartId;
     const updatedCart = await Cart.findByIdAndUpdate(cartId, req.body, {
       new: true,
-    })
-      .select("-user")
-      .populate("product");
+    }).populate("product quantity");
     if (!updatedCart) {
       return res.status(404).json({ error: "Cart not found" });
     }
@@ -58,9 +53,8 @@ exports.updateCart = async (req, res) => {
 
 exports.deleteCart = async (req, res) => {
   try {
-    const cartId = req.params.id;
+    const cartId = req.params.cartId;
     const deletedCart = await Cart.findByIdAndDelete(cartId);
-    console.log(deletedCart);
     if (!deletedCart) {
       return res.status(404).json({ error: "Cart not found" });
     }
@@ -70,8 +64,7 @@ exports.deleteCart = async (req, res) => {
   }
 };
 
-// TO Do: Need to check functionality
-exports.clearCartByUserId = async (req, res) => {
+exports.clearCartById = async (req, res) => {
   try {
     const userId = req.params.userId;
     const result = await Cart.deleteMany({ user: userId });
