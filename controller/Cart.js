@@ -60,7 +60,6 @@ exports.deleteCart = async (req, res) => {
   try {
     const cartId = req.params.id;
     const deletedCart = await Cart.findByIdAndDelete(cartId);
-    console.log(deletedCart);
     if (!deletedCart) {
       return res.status(404).json({ error: "Cart not found" });
     }

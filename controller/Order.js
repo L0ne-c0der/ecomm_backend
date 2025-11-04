@@ -21,7 +21,7 @@ exports.fetchUserOrders = async (req, res) => {
     const userId = req.params.userId;
     const orders = await Order.find({ user: userId })
       .select("-user")
-      .populate("items.product")
+      .populate("items.product selectedAddress")
       .exec();
     res.status(200).json(orders);
   } catch (error) {
