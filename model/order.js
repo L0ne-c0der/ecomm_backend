@@ -13,7 +13,7 @@ const orderSchema = new Schema({
   totalItems: { type: Number, required: true, min: 0 },
   orderStatus: {
     type: String,
-    enum: ["pending", "processed", "dispatched", "delivered", "cancelled"],
+    enum: ["pending", "processing", "dispatched", "delivered", "cancelled"],
     default: "pending",
   },
   selectedAddress: {

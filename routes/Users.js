@@ -7,7 +7,7 @@ const {
 } = require("../controller/User");
 const addressRouter = require("./Address"); // ensure routes/Address.js exports router
 const cartRouter = require("./Carts"); // ensure routes/Carts.js exports router
-const orderRouter = require("./Orders"); // ensure routes/Orders.js exports router
+const orderRouter = require("./userOrders"); // ensure routes/Orders.js exports router
 
 const router = express.Router();
 

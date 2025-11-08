@@ -22,7 +22,7 @@ exports.loginUser = async (req, res) => {
   try {
     const user = await User.findOne(
       { email: req.body.email },
-      "id name email password addresses"
+      "id name email password addresses role"
     )
       .populate({
         path: "addresses",

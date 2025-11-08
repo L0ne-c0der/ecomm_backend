@@ -14,7 +14,7 @@ const userSchema = new Schema(
       default: "user",
     },
     addresses: [{ type: Schema.Types.ObjectId, ref: "Addresses", default: [] }],
-    phone: { type: String, default: "", unique: true },
+    phone: { type: String, default: "" }, //, unique: true },
   },
   { versionKey: false }
 );
