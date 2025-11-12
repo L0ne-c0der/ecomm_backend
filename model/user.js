@@ -13,7 +13,6 @@ const userSchema = new Schema(
       enum: ["user", "admin", "moderator"],
       default: "user",
     },
-    addresses: [{ type: Schema.Types.ObjectId, ref: "Addresses", default: [] }],
     phone: { type: String, default: "" }, //, unique: true },
   },
   { versionKey: false }

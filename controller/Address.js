@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const { User } = require("../model/user");
 const { Address } = require("../model/address");
 
@@ -15,12 +15,6 @@ exports.createAddress = async (req, res) => {
 
     const address = await Address.create(
       { ...req.body, userId } //,
-      // { session }
-    );
-
-    await User.findByIdAndUpdate(
-      userId,
-      { $addToSet: { addresses: address.id } } //,
       // { session }
     );
 
@@ -72,17 +66,11 @@ exports.deleteAddress = async (req, res) => {
   // const session = await mongoose.startSession();
   try {
     // session.startTransaction();
-    const userId = req.params.userId;
     const addressId = req.params.id;
     const deletedAddress = await Address.findByIdAndDelete(
       addressId //{
       // session,}
     ).exec();
-    await User.findByIdAndUpdate(
-      userId,
-      { $pull: { addresses: addressId } }
-      // { session }
-    );
     // await session.commitTransaction();
     // session.endSession();
     res

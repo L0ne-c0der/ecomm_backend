@@ -1,4 +1,5 @@
 const { User } = require("../model/user");
+const { Address } = require("../model/address");
 
 // exports.createUser = async (req, res) => {
 //   try {
@@ -27,16 +28,15 @@ exports.fetchAllUsers = async (req, res) => {
 
 exports.fetchUserById = async (req, res) => {
   try {
-    const user = await User.findById(
-      req.params.id,
-      "name email id addresses role"
-    )
-      .populate({
-        path: "addresses",
-        // optionally limit returned fields, e.g.:
-        // select: "street city state zip -_id"
-      })
-      .exec();
+    let user = await User.findById(req.params.id, "name email id role").exec();
+    const addresses = await Address.find({ userId: req.params.id }).exec();
+    user = user.toObject();
+    addresses.forEach((address) => {
+      delete address.userId;
+    });
+    delete user.password;
+    user = { id: user._id, ...user, addresses };
+    delete user._id;
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }

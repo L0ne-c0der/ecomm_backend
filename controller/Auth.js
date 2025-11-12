@@ -1,12 +1,16 @@
 const { User } = require("../model/user");
+const bcrypt = require("bcryptjs");
 
 exports.createUser = async (req, res) => {
   try {
-    const user = new User(req.body);
+    const { password, ...rest } = req.body;
+    const hashed = await bcrypt.hash(password, 10);
+    const user = new User({ password: hashed, ...rest });
     user
       .save()
       .then((savedUser) => {
         const userObj = savedUser.toObject();
+        console.log("New user created:", userObj);
         delete userObj.password;
         res.status(201).json(userObj);
       })
@@ -19,30 +23,17 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  try {
-    const user = await User.findOne(
-      { email: req.body.email },
-      "id name email password addresses role"
-    )
-      .populate({
-        path: "addresses",
-        // optionally limit returned fields, e.g.:
-        // select: "street city state zip -_id"
-      })
-      .exec();
-    if (!user) {
-      return res.status(401).json({ message: "invalid credentials" });
-    }
-    if (user.password === req.body.password) {
-      const userObj = user.toObject();
-      userObj.id = userObj._id;
-      delete userObj._id;
-      delete userObj.password;
-      res.status(200).json(userObj);
-    } else {
-      res.status(401).json({ message: "invalid credentials" });
-    }
-  } catch (err) {
-    res.status(400).json(err);
-  }
+  // console.log("Logged in user (req.user):", req.user);
+  res.json({
+    message: "Login successful",
+    user: { id: req.user.id, role: req.user.role },
+  });
+};
+
+exports.logoutUser = (req, res) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    console.log("User logged out successfully");
+    res.json({ message: "Logout successful" });
+  });
 };
