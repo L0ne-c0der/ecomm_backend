@@ -1,10 +1,7 @@
 require("dotenv").config();
 const express = require("express");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const server = express();
 const mongoose = require("mongoose");
-const User = require("./model/user");
 const session = require("express-session");
 const productRouter = require("./routes/Products");
 const categoryRouter = require("./routes/Categories");
@@ -13,10 +10,10 @@ const userRouter = require("./routes/Users");
 const authRouter = require("./routes/Auths");
 const adminOrderRouter = require("./routes/adminOrders");
 const cors = require("cors");
-const initPassport = require("./config/passport");
+const cookieParser = require("cookie-parser");
 
 // Middleware
-
+server.use(cookieParser());
 server.use(express.json()); //to parse req.body
 server.use(
   cors({
@@ -26,7 +23,6 @@ server.use(
 ); //to allow cross-origin requests
 server.use(express.urlencoded({ extended: true }));
 
-// Passport and session setup
 server.use(
   session({
     secret: process.env.SESSION_SECRET || "hello kitty",
@@ -38,19 +34,8 @@ server.use(
       secure: false, // set true in production when using HTTPS
       sameSite: "lax",
     },
-    // store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }), // need to use connectMongo for this
   })
 );
-
-initPassport(passport);
-
-server.use(passport.initialize());
-console.log("passport.initialize() called");
-
-server.use(passport.authenticate("session")); // restores req.user from session using serialiize/deserialize logic
-console.log("passport session middleware mounted");
-
-// server.use(passport.session());
 
 // Routes
 server.use((req, res, next) => {
@@ -80,14 +65,4 @@ server.listen(process.env.PORT, () => {
 
 server.get("/hello", (req, res) => {
   res.send("Hello, World!");
-});
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  res.status(401).json({ message: "Not authenticated" });
-}
-
-server.get("/protected", ensureAuthenticated, (req, res) => {
-  console.log("🟢 Access granted to:", req.user.email);
-  res.json({ message: "You are authenticated!", user: req.user });
 });

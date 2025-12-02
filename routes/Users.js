@@ -8,11 +8,13 @@ const {
 const addressRouter = require("./Address"); // ensure routes/Address.js exports router
 const cartRouter = require("./Carts"); // ensure routes/Carts.js exports router
 const orderRouter = require("./userOrders"); // ensure routes/Orders.js exports router
-
 const router = express.Router();
+const { ensureOwnerOrAdmin } = require("../middleware/authWares");
+const { verifyToken } = require("../middleware/authJwt");
+
+router.use(verifyToken); // Protect all user routes
 
 router
-  // .post("/", createUser)
   .get("/", fetchAllUsers)
   .get("/:id", fetchUserById)
   .patch("/:id", updateUser);

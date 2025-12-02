@@ -1,22 +1,6 @@
 const { User } = require("../model/user");
 const { Address } = require("../model/address");
 
-// exports.createUser = async (req, res) => {
-//   try {
-//     const user = new User(req.body);
-//     user
-//       .save()
-//       .then((savedUser) => {
-//         res.status(201).json(savedUser);
-//       })
-//       .catch((error) => {
-//         res.status(400).json({ error: error.message });
-//       });
-//   } catch (error) {
-//     res.status(400).json({ error: error.message });
-//   }
-// };
-
 exports.fetchAllUsers = async (req, res) => {
   try {
     const users = await User.find({}, { _id: 1, email: 1, name: 1 }).exec();
