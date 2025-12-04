@@ -14,6 +14,12 @@ const userSchema = new Schema(
       default: "user",
     },
     phone: { type: String, default: "" }, //, unique: true },
+    refreshTokens: [
+      {
+        tokenHash: { type: String },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { versionKey: false }
 );

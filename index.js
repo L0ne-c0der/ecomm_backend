@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const server = express();
 const mongoose = require("mongoose");
-const session = require("express-session");
+// session removed: using stateless JWT + refresh-token flow
 const productRouter = require("./routes/Products");
 const categoryRouter = require("./routes/Categories");
 const brandRouter = require("./routes/Brands");
@@ -23,26 +23,8 @@ server.use(
 ); //to allow cross-origin requests
 server.use(express.urlencoded({ extended: true }));
 
-server.use(
-  session({
-    secret: process.env.SESSION_SECRET || "hello kitty",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      maxAge: 1 * 60 * 60 * 1000, // 1 hour
-      secure: false, // set true in production when using HTTPS
-      sameSite: "lax",
-    },
-  })
-);
-
 // Routes
-server.use((req, res, next) => {
-  console.log("🍪 Session ID:", req.sessionID);
-  console.log("📦 Session object:", req.session);
-  next();
-});
+server.use(express.static("public")); // optional: keep only useful middleware
 server.use("/products", productRouter.router); // Use the product router
 server.use("/categories", categoryRouter.router); // Use the category router
 server.use("/brands", brandRouter.router); // Use the brand router

@@ -2,16 +2,18 @@ const jwt = require("jsonwebtoken");
 
 exports.verifyToken = (req, res, next) => {
   try {
-    console.log("Verifying token...");
-    console.log("Headers:", req.headers);
-    console.log("Cookies:", req.cookies);
-    const auth =
-      req.headers.authorization || (req.cookies && req.cookies.token);
-    if (!auth) return res.status(401).json({ error: "No token provided" });
+    // Accept access token either via Authorization header (preferred) or a dedicated accessToken cookie.
+    // DO NOT treat refreshToken cookie as an access JWT.
+    const authHeader = req.headers.authorization;
+    const cookieToken = req.cookies && req.cookies.accessToken;
+    const raw =
+      authHeader && authHeader.startsWith("Bearer ")
+        ? authHeader.slice(7)
+        : cookieToken;
 
-    const token = auth.startsWith("Bearer ") ? auth.slice(7) : auth;
-    const payload = jwt.verify(token, process.env.JWT_SECRET || "change_me");
+    if (!raw) return res.status(401).json({ error: "No token provided" });
 
+    const payload = jwt.verify(raw, process.env.JWT_SECRET || "change_me");
     req.user = { id: payload.sub, role: payload.role };
     next();
   } catch (err) {
